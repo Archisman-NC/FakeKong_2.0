@@ -177,4 +177,5 @@ The class design aligns with several software design patterns:
 ## Conclusion
 
 The class diagram provides a structured view of the FakeKong 2.0 domain model and demonstrates object-oriented system design. It serves as the foundation for implementing a scalable API gateway and developer marketplace platform using modern backend engineering practices.
+
 <img width="872" height="1382" alt="classDiagram" src="https://github.com/user-attachments/assets/3d7ea558-c8d6-40de-9781-f73a011bd043" />
