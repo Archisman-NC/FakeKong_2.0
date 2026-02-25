@@ -14,6 +14,6 @@ export class UserService {
 
         const user = new User(randomUUID(),email,password);
 
-        return this.UserRepo.create()
+        return this.UserRepo.create(user);
     }
 }
