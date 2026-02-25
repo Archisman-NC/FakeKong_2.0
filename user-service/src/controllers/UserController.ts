@@ -35,4 +35,8 @@ export class UserController{
             res.status(400).json({message: error.message})
         }
     }
+    
+    me = async(req:Request,res:Response)=>{
+        res.json((req as any).user)
+    }
 }
