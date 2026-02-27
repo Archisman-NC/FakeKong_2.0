@@ -1,7 +1,7 @@
 import {Request,Response,NextFunction} from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "supersecretkey";
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export function authMiddleware(
     req:Request,

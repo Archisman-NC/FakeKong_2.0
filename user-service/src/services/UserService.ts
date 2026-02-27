@@ -1,10 +1,10 @@
 import { UserRepository } from "../repositories/UserRepository.js";
 import { User } from "../models/User.js";
-import { randomUUID, RandomUUIDOptions } from "node:crypto";
+import { randomUUID } from "node:crypto";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "supersecretkey";
+// const JWT_SECRET = process.env.JWT_SECRET!;
 
 export class UserService {
     constructor(private UserRepo : UserRepository){}
@@ -18,28 +18,40 @@ export class UserService {
 
         const hashedPass = await bcrypt.hash(password,10)
 
-        const user = new User(randomUUID(),email, hashedPass);
+        const user: User = {
+            id: randomUUID(),
+            email,
+            password: hashedPass,
+            };
 
         return this.UserRepo.create(user);
     }
 
-    async login(email:string,password:string){
-        const user = await this.UserRepo.findByEmail(email);
+    async login(email: string, password: string) {
+  const JWT_SECRET = process.env.JWT_SECRET;
 
-        if(!user){
-            throw new Error("Invalid Credentials")
-        }
+  if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET not configured");
+  }
 
-        const valid = bcrypt.compare(password,user.password)
+  const user = await this.UserRepo.findByEmail(email);
 
-        if(!valid){
-            throw new Error("Invalid Credentials")
-        }
-        const token = jwt.sign(
-            {userID:user.id,email:user.email},
-            JWT_SECRET,
-            {expiresIn: "1h"}
-        );
-        return {token:token}
-    }
+  if (!user) {
+    throw new Error("Invalid Credentials");
+  }
+
+  const valid = await bcrypt.compare(password, user.password);
+
+  if (!valid) {
+    throw new Error("Invalid Credentials");
+  }
+
+  const token = jwt.sign(
+    { userID: user.id, email: user.email },
+    JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+
+  return { token };
+}
 }

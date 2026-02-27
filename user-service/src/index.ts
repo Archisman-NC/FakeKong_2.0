@@ -1,6 +1,10 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from 'express';
 import userRoutes from "./routes/userRoutes.js";
 import {connectDB} from "./infrastructure/database.js";
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -24,5 +28,5 @@ const startServer = async () => {
         process.exit(1)
     }
 }
-
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
 startServer();
