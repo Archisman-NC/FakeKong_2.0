@@ -1,26 +1,34 @@
-import {Pool} from "pg";
+import {Pool,PoolClient} from "pg";
 import { Organization } from "../models/Organization.js";
 
 export class OrganizationRepository{
     constructor(private pool:Pool){}
 
-    async create(org:Organization): Promise<Organization>{
-        const query = `INSERT INTO organizations (id, name, created_by)
-        VALUES ($1, $2, $3)
-        RETURNING id, name, created_by, created_at`;
+    async create(
+    client: PoolClient,
+    org: Organization
+): Promise<Organization> {
 
-        const result = await this.pool.query(query,
-            [org.id, org.name, org.createdBy]);
-        
-        const row = result.rows[0];
-        
-        return {
-            id:row.id,
-            name: row.name,
-            createdBy:row.created_by,
-            createdAt:row.created_at 
-        }
-    }
+    const query = `
+    INSERT INTO organizations (id, name, created_by)
+    VALUES ($1, $2, $3)
+    RETURNING id, name, created_by, created_at`;
+
+    const result = await client.query(query, [
+        org.id,
+        org.name,
+        org.createdBy
+    ]);
+
+    const row = result.rows[0];
+
+    return {
+        id: row.id,
+        name: row.name,
+        createdBy: row.created_by,
+        createdAt: row.created_at
+    };
+}
 
     async findByUser(userId:string): Promise<Organization[]>{
         const query = `
