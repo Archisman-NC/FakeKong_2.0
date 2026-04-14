@@ -22,7 +22,7 @@ export const organizationMiddleware = async (
         return res.status(401).json({"Message":"Unauthorized"})
     }
 
-    const membership = await memberRepo.findMembership(user.id,orgId)
+    const membership = await memberRepo.findMembership(user.userID,orgId)
 
     if(!membership){
         return res.status(403).json({"Message":"Access denied"})
