@@ -4,7 +4,9 @@
   "description": "## Project Overview",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npm --prefix user-service run dev",
+    "start": "npm --prefix user-service run dev"
   },
   "author": "",
   "license": "ISC",
