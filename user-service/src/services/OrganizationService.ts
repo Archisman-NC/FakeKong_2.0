@@ -20,7 +20,7 @@ export class OrganizationService {
 async createOrganization(userId:string,name:string){
 
     if(!name||name.trim().length===0){
-        throw new Error("Organization Name is required")
+        throw new Error("VALIDATION_ERROR: Organization Name is required")
     }
     const client = await this.pool.connect()
     
