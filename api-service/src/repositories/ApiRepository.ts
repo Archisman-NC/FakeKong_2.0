@@ -62,4 +62,62 @@ export class ApiRepository {
 
     return this.mapRowToApi(result.rows[0]);
   }
+
+  async updateApi(
+    apiId: string,
+    organizationId: string,
+    updates: Partial<{ name: string; description: string; baseUrl: string; status: string }>
+  ): Promise<Api | null> {
+    const fields: string[] = [];
+    const values: any[] = [];
+    let queryIndex = 1;
+
+    if (updates.name) {
+      fields.push(`name = $${queryIndex++}`);
+      values.push(updates.name);
+    }
+    if (updates.description !== undefined) {
+      fields.push(`description = $${queryIndex++}`);
+      values.push(updates.description);
+    }
+    if (updates.baseUrl) {
+      fields.push(`base_url = $${queryIndex++}`);
+      values.push(updates.baseUrl);
+    }
+    if (updates.status) {
+      fields.push(`status = $${queryIndex++}`);
+      values.push(updates.status);
+    }
+
+    if (fields.length === 0) return null;
+
+    values.push(apiId, organizationId);
+    const apiIdIndex = queryIndex++;
+    const orgIdIndex = queryIndex++;
+
+    const result = await this.pool.query(
+      `
+      UPDATE apis
+      SET ${fields.join(", ")}
+      WHERE id = $${apiIdIndex} AND organization_id = $${orgIdIndex}
+      RETURNING *;
+      `,
+      values
+    );
+
+    if (result.rows.length === 0) return null;
+    return this.mapRowToApi(result.rows[0]);
+  }
+
+  async deleteApi(apiId: string, organizationId: string): Promise<boolean> {
+    const result = await this.pool.query(
+      `
+      DELETE FROM apis
+      WHERE id = $1 AND organization_id = $2;
+      `,
+      [apiId, organizationId]
+    );
+
+    return (result.rowCount ?? 0) > 0;
+  }
 }

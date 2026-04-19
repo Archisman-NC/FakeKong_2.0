@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { REPLCommand } from "node:repl";
 import { pool } from "../infrastructure/database";
 
 export const organizationMiddleware = async (

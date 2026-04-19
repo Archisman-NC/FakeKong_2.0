@@ -50,4 +50,24 @@ export class ApiService {
 
     return api;
   }
+
+  async updateApi(
+    apiId: string,
+    organizationId: string,
+    updates: Partial<{ name: string; description: string; baseUrl: string; status: string }>
+  ): Promise<Api> {
+    const api = await this.apiRepository.updateApi(apiId, organizationId, updates);
+    if (!api) {
+      throw new Error("API not found or update failed");
+    }
+    return api;
+  }
+
+  async deleteApi(apiId: string, organizationId: string): Promise<void> {
+    const success = await this.apiRepository.deleteApi(apiId, organizationId);
+    if (!success) {
+      throw new Error("API not found or failed to delete");
+    }
+  }
 }
+
