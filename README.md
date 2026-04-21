@@ -1,5 +1,7 @@
 # FakeKong 2.0 — Distributed API Gateway and Developer Marketplace Platform
 
+🚀 **Live Dashboard:** [https://fakekong-dashboard.onrender.com/](https://fakekong-dashboard.onrender.com/)
+
 ## Project Overview
 
 FakeKong 2.0 is a full-stack, distributed API management and developer marketplace platform designed using a microservices architecture. The platform enables organizations to publish, secure, monitor, and monetize APIs while allowing developers to discover and consume those APIs through a unified gateway.
