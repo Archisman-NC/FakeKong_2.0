@@ -2,6 +2,7 @@ services:
   - type: web
     name: fakekong-user-service
     env: node
+    plan: free
     buildCommand: cd user-service && npm install && npm run build
     startCommand: cd user-service && npm start
     envVars:
@@ -35,6 +36,7 @@ services:
   - type: web
     name: fakekong-api-service
     env: node
+    plan: free
     buildCommand: cd api-service && npm install && npm run build
     startCommand: cd api-service && npm start
     envVars:
@@ -86,3 +88,4 @@ databases:
   - name: fakekong-postgres
     databaseName: fakekong_db
     user: fakekong_user
+    plan: free
