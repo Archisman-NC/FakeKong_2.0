@@ -1,0 +1,88 @@
+services:
+  - type: web
+    name: fakekong-user-service
+    env: node
+    buildCommand: cd user-service && npm install && npm run build
+    startCommand: cd user-service && npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fakekong-postgres
+          property: connectionString
+      - key: DB_HOST
+        fromDatabase:
+          name: fakekong-postgres
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: fakekong-postgres
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: fakekong-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: fakekong-postgres
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: fakekong-postgres
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+
+  - type: web
+    name: fakekong-api-service
+    env: node
+    buildCommand: cd api-service && npm install && npm run build
+    startCommand: cd api-service && npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fakekong-postgres
+          property: connectionString
+      - key: DB_HOST
+        fromDatabase:
+          name: fakekong-postgres
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: fakekong-postgres
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: fakekong-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: fakekong-postgres
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: fakekong-postgres
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+
+  - type: web
+    name: fakekong-dashboard
+    env: static
+    buildCommand: cd dashboard && npm install && npm run build
+    staticPublishPath: ./dashboard/dist
+    envVars:
+      - key: VITE_USER_SERVICE_URL
+        fromService:
+          type: web
+          name: fakekong-user-service
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: VITE_API_SERVICE_URL
+        fromService:
+          type: web
+          name: fakekong-api-service
+          envVarKey: RENDER_EXTERNAL_URL
+
+databases:
+  - name: fakekong-postgres
+    databaseName: fakekong_db
+    user: fakekong_user

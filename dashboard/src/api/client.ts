@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const USER_SERVICE_URL = 'http://localhost:3001';
-const API_SERVICE_URL = 'http://localhost:3002';
+const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL || 'http://localhost:3001';
+const API_SERVICE_URL = import.meta.env.VITE_API_SERVICE_URL || 'http://localhost:3002';
 
 export const userApi = axios.create({
   baseURL: USER_SERVICE_URL,
